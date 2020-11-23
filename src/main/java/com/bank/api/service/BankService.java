@@ -6,6 +6,7 @@ import com.bank.api.view.ApplyAccountBack;
 import com.bank.api.view.PayStatusView;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,8 +26,8 @@ public interface BankService {
     @GetMapping(value = {"/bank/service/accountDetails/{accountNo}"})
     List<AccountDetail> accountDetails(@PathVariable(value = "accountNo") String accountNo,
                                        @RequestParam("flag") String flag,
-                                       @RequestParam("startDate")  LocalDate startDate,
-                                       @RequestParam("endDate") LocalDate endDate,
+                                       @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd", iso = DateTimeFormat.ISO.DATE_TIME)  LocalDate startDate,
+                                       @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd", iso = DateTimeFormat.ISO.DATE_TIME) LocalDate endDate,
                                        @RequestParam("status") String status);
 
     @GetMapping(value = {"/bank/service/payStatus/{demanderId}/{planId}/{supplierId}/{type}"})
@@ -79,7 +80,7 @@ public interface BankService {
     Boolean sendMQStatus( @PathVariable(value = "accountNo") String accountNo,
                                 @RequestParam(value = "marginStatus") String marginStatus,
                                 @RequestParam(value = "receiptStatus") String receiptStatus,
-                                @RequestParam(value = "transferDate") LocalDateTime transferDate);
+                                @RequestParam(value = "transferDate") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime transferDate);
 
 
     @PostMapping(value = {"/bank/service/changeStatus/{accountNo}"})
