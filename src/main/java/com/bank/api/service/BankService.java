@@ -72,25 +72,26 @@ public interface BankService {
     Boolean manualBankAccount(@RequestBody BankAccountRequest bankAccountRequest);
 
     @PostMapping(value = {"/bank/service/service/charge"})
-    Boolean postServiceCharge(@RequestBody BackServiceFeeForm backServiceFee);
+    Boolean putServiceCharge(@RequestBody BackServiceFeeForm backServiceFee);
 
     @PostMapping(value = {"/bank/service/status/{accountNo}"})
-    Boolean updateMarginStatus( @PathVariable(value = "accountNo") String accountNo,
+    Boolean sendMQStatus( @PathVariable(value = "accountNo") String accountNo,
                                 @RequestParam(value = "marginStatus") String marginStatus,
                                 @RequestParam(value = "receiptStatus") String receiptStatus,
                                 @RequestParam(value = "transferDate") LocalDateTime transferDate);
 
 
     @PostMapping(value = {"/bank/service/changeStatus/{accountNo}"})
-    Boolean changeMarginStatus( @PathVariable(value = "accountNo") String accountNo,@RequestParam(value = "marginStatus") Integer marginStatus);
+    Boolean changeStatus( @PathVariable(value = "accountNo") String accountNo,@RequestParam(value = "marginStatus") Integer marginStatus);
 
     @PostMapping(value = {"/bank/service/push/annualFee"})
     Boolean pushAnnualFee(@RequestBody PushAnnualFeeForm form);
 
-    @GetMapping("/supplier/{smCompanyId}/type/{type}/isAnnaulFee")
+    @GetMapping("/annual/fee/supplier/{smCompanyId}/type/{type}/isAnnaulFee")
     Boolean isAnnualFee(@PathVariable("smCompanyId") Integer smCompanyId,
                         @PathVariable("type") Integer type,
                         @RequestParam(value = "date") LocalDate date,
                         @RequestParam(value = "demandId") String demandId);
+    
 
 }
