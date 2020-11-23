@@ -1,9 +1,6 @@
 package com.bank.api.service;
 
-import com.bank.api.form.ApplyAccountForm;
-import com.bank.api.form.BackServiceFeeForm;
-import com.bank.api.form.BankAccountRequest;
-import com.bank.api.form.PushAnnualFeeForm;
+import com.bank.api.form.*;
 import com.bank.api.view.AccountDetail;
 import com.bank.api.view.ApplyAccountBack;
 import com.bank.api.view.PayStatusView;
@@ -15,7 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@FeignClient(name="${com.hxyc.bank.config.name:monthly-statement}",contextId = "bankApi")
+@FeignClient(name="${com.hxyc.bank.config.name:monthly-statement}",contextId = "bankService")
 public interface BankService {
 
     @PostMapping(value = {"/bank/service/applyAccount"})
@@ -73,6 +70,10 @@ public interface BankService {
 
     @PostMapping(value = {"/bank/service/service/charge"})
     Boolean putServiceCharge(@RequestBody BackServiceFeeForm backServiceFee);
+
+    default Boolean sendMQStatus(Description description){
+        return this.sendMQStatus(description.getAccountNo(),description.getMarginStatus(),description.getReceiptStatus(),description.getTransferDate());
+    }
 
     @PostMapping(value = {"/bank/service/status/{accountNo}"})
     Boolean sendMQStatus( @PathVariable(value = "accountNo") String accountNo,
